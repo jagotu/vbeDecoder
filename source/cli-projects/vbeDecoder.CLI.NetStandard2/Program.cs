@@ -53,19 +53,12 @@ namespace vbeDecoder.CLI
                 Console.WriteLine();
                 Console.WriteLine(result);
             }
-            else if (Directory.Exists(opts.OutputPath))
+            else 
             {
-                string newFilename = ChangeFileName(Path.GetFileName(filename));
-                string oPath = Path.Combine(opts.OutputPath, newFilename);
+                /*string newFilename = ChangeFileName(Path.GetFileName(filename));
+                string oPath = Path.Combine(opts.OutputPath, newFilename);*/
 
-                WriteFileResult(result, oPath);
-            }
-            else
-            {
-                string newFilename = ChangeFileName(Path.GetFileName(filename));
-                string oPath = opts.OutputPath + "-" + newFilename;
-
-                WriteFileResult(result, oPath);
+                WriteFileResult(result.Replace("VBScript.Encode", "VBScript"), opts.OutputPath);
             }
         }
 
@@ -84,30 +77,9 @@ namespace vbeDecoder.CLI
 
         private static void WriteFileResult(string result, string outputPath)
         {
-            if (File.Exists(outputPath))
-            {
-                ConsoleKeyInfo key = new ConsoleKeyInfo();
-                while (!"yYnNcC".Contains(key.KeyChar))
-                {
-                    Console.WriteLine($"File '{outputPath}' already exists. Overwrite ? [Y] Yes / [N] No / [C] Cancel");
-                    key = Console.ReadKey();
-                }
 
-                switch (Char.ToUpper(key.KeyChar))
-                {
-                    case 'Y':
-                        File.Delete(outputPath);
-                        File.WriteAllText(outputPath, result);
-                        break;
-                    case 'N':
-                    case 'C':
-                        Console.WriteLine("Canceled.");
-                        break;
-                }
-            } else
-            {
                 File.WriteAllText(outputPath, result);
-            }
+            
         }
 
 

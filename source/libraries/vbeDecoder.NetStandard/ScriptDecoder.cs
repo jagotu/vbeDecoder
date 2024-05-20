@@ -102,8 +102,19 @@ namespace vbeDecoder
             if (string.IsNullOrWhiteSpace(encodedScript))
                 throw new ArgumentNullException(encodedScript);
 
-            string vbe = Unwrap(encodedScript);
-            return DecodeTokens(vbe);
+            try { 
+                while (true)
+                {
+                
+                    string vbe = Retrieve(encodedScript);
+                    
+                    encodedScript = encodedScript.Replace(vbe, DecodeTokens(Unwrap(vbe)));
+                }
+            } catch (Exception ex) { }
+
+
+            return encodedScript;// vbe = Unwrap(encodedScript);
+            //return 
         }
         #endregion
 
@@ -113,6 +124,28 @@ namespace vbeDecoder
         /// </summary>
         /// <param name="wrappedScript"></param>
         /// <returns>The unwrapped VBE tokens.</returns>
+        /// 
+
+        private static string Retrieve(string wrappedScript)
+        {
+            if (string.IsNullOrWhiteSpace(wrappedScript))
+                throw new ArgumentNullException(wrappedScript);
+
+            var iTagBeginPos = wrappedScript.IndexOf(VBE_SIG_START);
+
+            if (iTagBeginPos >= 0)
+            {
+                    var iTagEnd = wrappedScript.IndexOf(VBE_SIG_END);
+
+                    if (iTagEnd > 0)
+                        wrappedScript = wrappedScript.Substring(iTagBeginPos, iTagEnd + VBE_SIG_END.Length - iTagBeginPos);
+                    return wrappedScript;
+            }
+
+            throw new NotSupportedException(VBE_ERROR_MISSING_SIG);
+        }
+
+
         private static string Unwrap(string wrappedScript)
         {
             if (string.IsNullOrWhiteSpace(wrappedScript))

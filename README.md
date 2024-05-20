@@ -1,7 +1,10 @@
-[![NuGet](https://img.shields.io/nuget/v/vbeDecoder)](https://www.nuget.org/packages/vbeDecoder/)
-[![NuGet Download](https://img.shields.io/nuget/dt/vbeDecoder)](https://www.nuget.org/packages/vbeDecoder/)
-[![GitHub Download](https://img.shields.io/github/downloads/sbruyere/vbeDecoder/total)](https://github.com/sbruyere/vbeDecoder/releases/)
-[![.NET](https://github.com/sbruyere/vbeDecoder/actions/workflows/dotnet.yml/badge.svg)](https://github.com/sbruyere/vbeDecoder/actions/workflows/dotnet.yml)
+# Fork features
+
+* better support for encoded asp files, mainly recursively decoding all encoded tags until none are left
+* better support for scripting: no wait for keypress when finished and actually respect the outputfile name provided on the commandline
+
+Main motivation is so that can be used to decode a full application like this: `grep -irFl '#@~^' | while read i; do ./vbeDecoder.exe -i $i -o ${i/.asp/.dec.asp}; done`
+
 
 # vbeDecoder
 Decoder for Visual Basic Script Encoded scripts (VBE) and JScript Encoded scripts (JSE), written in C#, and provided as a library for .Net Standard.

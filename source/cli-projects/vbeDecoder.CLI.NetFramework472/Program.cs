@@ -7,7 +7,7 @@ namespace vbeDecoder.CLI.NetFramework472
         static void Main(string[] args)
         {
             MainRun(args);
-            Console.Read();
+            //Console.Read();
         }
     }
 }
